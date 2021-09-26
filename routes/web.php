@@ -14,6 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'SpaceNewsController@index');
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
+Route::get('form', 'SpaceNewsController@showForm')->name('form.show');
+Route::post('get_form', 'UserController@saveUser')->name('get_form.show');

@@ -4,6 +4,13 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Http\Controllers\EpicPhotoController;
+use App\Http\Controllers\BestPhotoController;
+use App\Http\Controllers\MarsRoverPhotoController;
+use Illuminate\Support\Facades\DB;
+
+use Illuminate\Support\Facades\Http;
+use App\EpicPhoto;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +20,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\DemoCron::class,
     ];
 
     /**
@@ -25,6 +32,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            EpicPhotoController::saveEpicPhoto();
+            BestPhotoController::saveBestPhoto();
+            MarsRoverPhotoController::saveMarsRoverPhoto();
+        })->everyMinute();
     }
 
     /**
@@ -34,7 +46,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
